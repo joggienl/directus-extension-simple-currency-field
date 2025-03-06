@@ -1,0 +1,35 @@
+# This workflow will run build using node and then publish a package to NPM when a release is created
+# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+
+name: Node.js Build and Publish
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: |
+            - args: [--frozen-lockfile]
+      - uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+          node-version: 22
+          registry-url: https://registry.npmjs.org/
+      - name: Build
+        run: pnpm run build
+      # Update README with versioned image URL. We do this because the Directus
+      # Marketplace will parse the readme file and it needs a url to load the
+      # image from.
+      - name: Update README with versioned image URL
+        run: |
+          sed -i '/<!-- IMAGE_URL_MARKER -->/,/<!-- END_IMAGE_URL_MARKER -->/c\<!-- IMAGE_URL_MARKER -->\n![Example of Currency Field Interface and Display](https://raw.githubusercontent.com/${{ github.repository }}/${{ github.event.release.tag_name }}/docs/example.gif)\n<!-- END_IMAGE_URL_MARKER -->' README.md
+      - name: Publish to NPM
+        run: pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

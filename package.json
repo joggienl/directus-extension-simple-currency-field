@@ -1,0 +1,74 @@
+{
+	"name": "directus-extension-simple-currency-field",
+	"type": "module",
+	"version": "1.0.0",
+	"packageManager": "pnpm@10.6.1+sha512.40ee09af407fa9fbb5fbfb8e1cb40fbb74c0af0c3e10e9224d7b53c7658528615b2c92450e74cfad91e3a2dcafe3ce4050d80bda71d757756d2ce2b66213e9a3",
+	"description": "A Directus extension that provides a simple and efficient way to handle currency fields in your Directus project",
+	"icon": "extension",
+	"author": {
+		"email": "jogchum@clevercactus.dev",
+		"name": "Jogchum Koerts"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com/joggienl/directus-extension-simple-currency-field.git"
+	},
+	"keywords": [
+		"directus",
+		"directus-extension",
+		"directus-extension-bundle"
+	],
+	"files": [
+		"dist",
+		"docs"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"directus:extension": {
+		"type": "bundle",
+		"path": {
+			"app": "dist/app.js",
+			"api": "dist/api.js"
+		},
+		"entries": [
+			{
+				"type": "interface",
+				"name": "currency-interface",
+				"source": "src/currency-interface/index.ts"
+			},
+			{
+				"type": "display",
+				"name": "currency-display",
+				"source": "src/currency-display/index.ts"
+			}
+		],
+		"host": ">=11.0.0 <=12.0.0"
+	},
+	"scripts": {
+		"build": "directus-extension build",
+		"dev": "directus-extension build -w --no-minify",
+		"link": "directus-extension link",
+		"add": "directus-extension add",
+		"validate": "directus-extension validate",
+		"lint": "eslint --flag unstable_config_lookup_from_file .",
+		"lint:fix": "eslint --flag unstable_config_lookup_from_file . --fix"
+	},
+	"devDependencies": {
+		"@directus/eslint-config": "0.1.0",
+		"@directus/extensions-sdk": "13.0.3",
+		"@directus/tsconfig": "3.0.0",
+		"@types/node": "22.13.10",
+		"eslint": "9.22.0",
+		"jiti": "2.4.2",
+		"typescript": "5.7.3",
+		"vue": "3.5.13"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"esbuild",
+			"vue-demi"
+		]
+	}
+}
